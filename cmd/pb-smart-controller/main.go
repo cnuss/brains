@@ -1,5 +1,7 @@
 package main
 
-func main() {
-	println("Hello from pb-smart-controller")
+import "rsc.io/quote"
+
+func Hello() string {
+	return quote.Hello()
 }

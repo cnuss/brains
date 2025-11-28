@@ -1,5 +1,7 @@
 package main
 
-func main() {
-	println("Hello from susbstation")
+import "rsc.io/quote"
+
+func Hello() string {
+	return quote.Hello()
 }
