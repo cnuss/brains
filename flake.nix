@@ -26,7 +26,7 @@
 
       #Use this one when updating packages, it's failsafe non-cached one
       #vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      vendorHash = "sha256-Np6qkhmGjpN/6fIP2riieuSALpbhpRgTp1RayNt9fg8=";
+      vendorHash = "sha256-3rWfWAVcCVj1RN1gAlwRThZe9M2mBNTViE6z3OVPs90=";
 
       buildNsc = pkgs:
         pkgs.buildGoModule {
