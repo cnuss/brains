@@ -50,6 +50,7 @@ jobs:
       - name: Restore Nix Store
         if: steps.cache-nix.outputs.cache-hit == 'true'
         run: |
+          which nix-store
           ls -alhR /nix
           sudo rm -fr /nix/store
           nix-store --restore /nix/store < ~/nix-store.dump
