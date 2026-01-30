@@ -53,13 +53,10 @@ jobs:
           which nix-store
           ls -al /nix/var/nix/profiles/default/bin/nix-store
           ls -al /nix/var/nix/profiles/default/bin/nix
+          nix-store --restore /tmp/nix-store < ~/nix-store.dump
           sudo rm -fr /nix/store
-          nix-store --restore /nix/store < ~/nix-store.dump
-
-      # - name: Restore Nix Database
-      #   if: steps.cache-nix-database.outputs.cache-hit == 'true'
-      #   run: |
-      #     nix-store --restore-db < ~/nix-database.dump
+          sudo mv /tmp/nix-store /nix/store
+          nix-store --restore-db < ~/nix-database.dump
 
       - name: Build
         run: |
