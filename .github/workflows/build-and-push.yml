@@ -49,23 +49,6 @@ jobs:
           buildah manifest add ${manifest} containers-storage:$(buildah inspect --format '{{.FromImageID}}' ${amd64image})
           buildah manifest add ${manifest} containers-storage:$(buildah inspect --format '{{.FromImageID}}' ${arm64image})
 
-      - name: Inspect Root
-        run: |
-          ls -al /
-
-      - name: Inspect Nix
-        run: |
-          ls -al /nix
-
-      - name: Inspect Nix Store
-        run: |
-          ls -al /nix/store
-
-      - name: Look At Passwd and Groups
-        run: |
-          cat /etc/passwd
-          cat /etc/group
-
       - name: Push to registry
         uses: redhat-actions/push-to-registry@v2
         with:
@@ -74,3 +57,6 @@ jobs:
           tags: ${{ github.sha }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dump Nix Store Size
+        run: nix-store --dump /nix/store > ~/nix.dump
