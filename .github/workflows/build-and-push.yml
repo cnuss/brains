@@ -32,15 +32,8 @@ jobs:
         id: cache-nix
         uses: actions/cache@v5
         with:
-          path: ~/nix-store.dump
+          path: ~/store.export
           key: ${{ runner.os }}-nix-store-${{ hashFiles('**/flake.lock') }}
-
-      - name: Cache Nix Database
-        id: cache-nix-database
-        uses: actions/cache@v5
-        with:
-          path: ~/nix-database.dump
-          key: ${{ runner.os }}-nix-database-${{ hashFiles('**/flake.lock') }}
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
@@ -50,13 +43,8 @@ jobs:
       - name: Restore Nix Store
         if: steps.cache-nix.outputs.cache-hit == 'true'
         run: |
-          which nix-store
-          ls -al /nix/var/nix/profiles/default/bin/nix-store
-          ls -al /nix/var/nix/profiles/default/bin/nix
-          nix-store --restore /tmp/nix-store < ~/nix-store.dump
-          sudo rm -fr /nix/store
-          sudo mv /tmp/nix-store /nix/store
-          nix-store --restore-db < ~/nix-database.dump
+          set -x
+          nix-store --import < ~/store.export
 
       - name: Build
         run: |
@@ -78,10 +66,5 @@ jobs:
 
       - name: Dump Nix Store Size
         run: |
-          nix-store --dump /nix/store > ~/nix-store.dump
-          ls -alh ~/nix-store.dump
-
-      - name: Dump Nix Database Size
-        run: |
-          nix-store --dump-db > ~/nix-database.dump
-          ls -alh ~/nix-database.dump
+          nix-store --export $(nix path-info --all) > ~/store.export
+          ls -alh ~/store.export
