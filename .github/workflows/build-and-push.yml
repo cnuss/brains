@@ -32,7 +32,14 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          
+
+      - name: Cache Nix
+        id: cache-nix
+        uses: actions/cache@v5
+        with:
+          path: /nix/store
+          key: ${{ runner.os }}-nix-store-${{ hashFiles('**/flake.lock') }}
+
       - name: Build
         run: |
           amd64image=$(buildah from docker-archive:$(nix build .#dockerImage.brains.x86_64-linux --print-out-paths))
@@ -41,10 +48,6 @@ jobs:
           manifest=$(buildah manifest create ghcr.io/cnuss/brains:${{ github.sha }})
           buildah manifest add ${manifest} containers-storage:$(buildah inspect --format '{{.FromImageID}}' ${amd64image})
           buildah manifest add ${manifest} containers-storage:$(buildah inspect --format '{{.FromImageID}}' ${arm64image})
-
-      - name: Inspect Nix
-        run: |
-          ls -al /nix/store
 
       - name: Push to registry
         uses: redhat-actions/push-to-registry@v2
