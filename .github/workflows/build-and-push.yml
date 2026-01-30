@@ -51,7 +51,8 @@ jobs:
         if: steps.cache-nix.outputs.cache-hit == 'true'
         run: |
           ls -alhR /nix
-          nix-store --restore /tmp/nix-store < ~/nix-store.dump
+          sudo rm -fr /nix/store
+          nix-store --restore /nix/store < ~/nix-store.dump
 
       # - name: Restore Nix Database
       #   if: steps.cache-nix-database.outputs.cache-hit == 'true'
