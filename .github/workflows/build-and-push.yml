@@ -50,12 +50,13 @@ jobs:
       - name: Restore Nix Store
         if: steps.cache-nix.outputs.cache-hit == 'true'
         run: |
-          nix-store --restore < ~/nix-store.dump
+          ls -alhR /nix
+          nix-store --restore /tmp/nix-store < ~/nix-store.dump
 
-      - name: Restore Nix Database
-        if: steps.cache-nix-database.outputs.cache-hit == 'true'
-        run: |
-          nix-store --restore-db < ~/nix-database.dump
+      # - name: Restore Nix Database
+      #   if: steps.cache-nix-database.outputs.cache-hit == 'true'
+      #   run: |
+      #     nix-store --restore-db < ~/nix-database.dump
 
       - name: Build
         run: |
