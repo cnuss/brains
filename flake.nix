@@ -1,5 +1,5 @@
 {
-  description = "";
+  description = "hello";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/a7fc50310a037e6fb42d08188f7e0ff3e58379bc";
