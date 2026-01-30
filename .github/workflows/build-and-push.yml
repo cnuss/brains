@@ -35,6 +35,8 @@ jobs:
 
       - name: Nix Cache
         uses: scaffoldly/cache-nix-action@main
+        with:
+          key: key: ${{ runner.os }}-nix-store-${{ hashFiles('flake.nix', 'flake.lock') }} 
 
       - name: Build
         run: |
