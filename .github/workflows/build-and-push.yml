@@ -52,7 +52,7 @@ jobs:
         run: |
           which nix-store
           ls -al /nix/var/nix/profiles/default/bin/nix-store
-          ls -alhR /nix
+          ls -al /nix/var/nix/profiles/default/bin/nix
           sudo rm -fr /nix/store
           nix-store --restore /nix/store < ~/nix-store.dump
 
