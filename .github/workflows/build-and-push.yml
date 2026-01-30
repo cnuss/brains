@@ -28,12 +28,19 @@ jobs:
           sudo apt-get install -y buildah fuse-overlayfs iptables podman slirp4netns uidmap xz-utils
           mkdir -p $HOME/.docker
 
-      - name: Cache Nix
+      - name: Cache Nix Store
         id: cache-nix
         uses: actions/cache@v5
         with:
           path: ~/nix-store.dump
           key: ${{ runner.os }}-nix-store-${{ hashFiles('**/flake.lock') }}
+
+      - name: Cache Nix Database
+        id: cache-nix-database
+        uses: actions/cache@v5
+        with:
+          path: ~/nix-database.dump
+          key: ${{ runner.os }}-nix-database-${{ hashFiles('**/flake.lock') }}
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
@@ -62,3 +69,8 @@ jobs:
         run: |
           nix-store --dump /nix/store > ~/nix-store.dump
           ls -alh ~/nix-store.dump
+
+      - name: Dump Nix Database Size
+        run: |
+          nix-store --dump-db > ~/nix-database.dump
+          ls -alh ~/nix-database.dump
